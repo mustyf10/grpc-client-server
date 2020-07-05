@@ -9,5 +9,10 @@ def run():
     response = stub.SayHello(foobar_pb2.HelloRequest(name='you'))
     print("Client received: " + response.message)
 
+    channel2 = grpc.insecure_channel('localhost:8081')
+    stub = foobar_pb2_grpc.FoobarStub(channel2)
+    response = stub.SayHello(foobar_pb2.HelloRequest(name='you'))
+    print("Client received: " + response.message)
+
 if __name__ == '__main__':
     run()
