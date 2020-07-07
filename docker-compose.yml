@@ -1,0 +1,43 @@
+version: "3"
+networks:
+  my-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.23.0.0/16"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - ./nginx_container/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx_container/logs:/var/log/nginx
+    networks:
+      my-network:
+        ipv4_address: 172.23.0.2
+    ports:
+      - 1698:1698
+      - 1699:1699
+
+  grpcclientserver:
+    image: grpcclientserver
+    build:
+      context: .
+      dockerfile: /server1/Dockerfile
+    networks:
+      my-network:
+        ipv4_address: 172.23.0.3
+    ports:
+      - "1499:1499"
+
+  grpcclientserver2:
+    image: grpcclientserver2
+    build:
+      context: .
+      dockerfile: server2/dockerfile
+    networks:
+      my-network:
+        ipv4_address: 172.23.0.4
+    ports:
+      - "1599:1599"
