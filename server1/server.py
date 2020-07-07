@@ -11,7 +11,7 @@ class Listener(foobar_pb2_grpc.FoobarServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     foobar_pb2_grpc.add_FoobarServicer_to_server(Listener(), server)
-    server.add_insecure_port('[::]:8080')
+    server.add_insecure_port('[::]:1499')
     server.start()
     print("Server 1 Running")
     server.wait_for_termination()
